@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LECTIO</title>
+<meta name="description" content="LECTIO — Um encontro com Deus. Liturgia diária, estudo, reflexão e santo do dia para jovens.">
+<meta name="theme-color" content="#2f5d73">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="LECTIO">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1e7; --card:#fffdf8; --ink:#23303a; --muted:#66717a; --line:#e7dfcf;
+  --brand:#2f5d73; --gold:#b8922e; --bible:#fbf6ea;
+  --lit:#3f8f5a; --lit-soft:#e6f1e9; --lit-ink:#ffffff;
+  --tag-hist:#e3edf3; --tag-hist-ink:#2f5d73; --tag-com:#f6ecd5; --tag-com-ink:#8a6a1c; --tag-bib:#efe7d6; --tag-bib-ink:#6b5a35;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#141a1f; --card:#1c242b; --ink:#e9e4da; --muted:#9aa5ad; --line:#2c363e; --brand:#8cb8cc; --bible:#211f1a;
+  --lit-soft:#22302a; --tag-hist:#203039; --tag-hist-ink:#9cc5d8; --tag-com:#33291a; --tag-com-ink:#e0c27a; --tag-bib:#2c271c; --tag-bib-ink:#d8c7a0;
+}}
+:root[data-theme="dark"]{
+  --bg:#141a1f; --card:#1c242b; --ink:#e9e4da; --muted:#9aa5ad; --line:#2c363e; --brand:#8cb8cc; --bible:#211f1a;
+  --lit-soft:#22302a; --tag-hist:#203039; --tag-hist-ink:#9cc5d8; --tag-com:#33291a; --tag-com-ink:#e0c27a; --tag-bib:#2c271c; --tag-bib-ink:#d8c7a0;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.25;margin:0 0 .5rem}
+a{color:var(--brand)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.brandbar{display:flex;align-items:center;gap:10px;padding:10px 0}
+.brandbar svg{width:38px;height:38px;flex:none}
+.brandname{font-family:Fraunces,serif;font-size:1.35rem;letter-spacing:.14em;font-weight:600;color:var(--brand);line-height:1}
+.tagline{font-size:.78rem;color:var(--muted);letter-spacing:.02em}
+.daytoggle{margin-left:auto;display:flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}
+.daytoggle button{border:0;background:none;color:var(--muted);font:600 .85rem Inter,sans-serif;padding:7px 13px;border-radius:999px;cursor:pointer}
+.daytoggle button[aria-pressed="true"]{background:var(--brand);color:var(--bg)}
+.daytoggle .ico{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;display:block}
+.daytoggle #btnCal{padding:6px 10px}
+.cal{margin-top:16px}
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.calhead h2{margin:0;font-size:1.15rem}
+.calhead h2::first-letter{text-transform:uppercase}
+.calnav{border:1px solid var(--line);background:var(--bg);color:var(--ink);width:38px;height:38px;border-radius:50%;font-size:1.3rem;line-height:1;cursor:pointer}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.calgrid .wd{font-size:.68rem;font-weight:600;text-transform:uppercase;color:var(--muted);text-align:center;padding:4px 0}
+.calgrid button{position:relative;aspect-ratio:1/1;border:1px solid transparent;border-radius:12px;background:var(--bg);color:var(--ink);font:500 .92rem Inter,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0}
+.calgrid button .dot{width:9px;height:9px;border-radius:50%;background:var(--line);border:1px solid rgba(0,0,0,.12)}
+.calgrid button .star{position:absolute;top:2px;right:5px;font-size:.62rem;color:var(--gold)}
+.calgrid button.today{border-color:var(--gold)}
+.calgrid button.sel{background:var(--brand);color:var(--bg)}
+.calgrid button.sun{color:#b23a3a}
+.calgrid button.sel.sun{color:var(--bg)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:12px;font-size:.75rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:10px;height:10px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:inline-block}
+.legend .star{color:var(--gold)}
+.datebtn{border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+.hero{margin:18px 0 8px;border-radius:20px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
+.hero .band{height:10px;background:var(--lit)}
+.hero .inner{padding:18px 18px 16px}
+.date{font-size:.85rem;color:var(--muted)}
+.date::first-letter{text-transform:uppercase}
+.hero h1{font-size:1.5rem;margin:.25rem 0 .6rem}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;padding:5px 12px 5px 6px;border-radius:999px;background:var(--lit-soft);color:var(--ink)}
+.chip i{width:18px;height:18px;border-radius:50%;background:var(--lit);border:1px solid rgba(0,0,0,.15)}
+.hero .quote{margin:.8rem 0 0;font-family:Fraunces,serif;font-style:italic;color:var(--muted)}
+main section.view{display:none}
+main section.view.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}
+.card h2{font-size:1.2rem}
+.card h3{font-size:1.05rem;margin-top:1rem}
+.eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem}
+.tag{display:inline-block;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:6px;margin:0 0 .45rem}
+.tag.bib{background:var(--tag-bib);color:var(--tag-bib-ink)}
+.tag.hist{background:var(--tag-hist);color:var(--tag-hist-ink)}
+.tag.com{background:var(--tag-com);color:var(--tag-com-ink)}
+.tag.par{background:var(--lit-soft);color:var(--ink)}
+.bible{background:var(--bible);border-radius:12px;padding:14px 16px;font-family:Fraunces,Georgia,serif;font-size:1.05rem;line-height:1.75}
+.bible sup{font-family:Inter,sans-serif;font-size:.62em;color:var(--gold);font-weight:600;margin-right:2px}
+.bible p{margin:.35rem 0}
+.refrain{font-weight:600;color:var(--brand);font-style:italic}
+.ref{font-weight:600;color:var(--muted);font-size:.9rem}
+.reading-title{font-size:.9rem;color:var(--muted);margin:.1rem 0 .6rem}
+.response{font-size:.9rem;color:var(--muted);margin-top:.6rem}
+.response b{color:var(--ink)}
+.notice{border-left:4px solid var(--gold);background:var(--tag-com);color:var(--ink);padding:10px 14px;border-radius:8px;font-size:.9rem;margin:12px 0}
+.compare{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:720px){.compare.both{grid-template-columns:1fr 1fr}}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}
+.seg button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 12px;font:500 .85rem Inter,sans-serif;cursor:pointer}
+.seg button[aria-pressed="true"]{border-color:var(--brand);background:var(--brand);color:var(--bg)}
+.para p{margin:.4rem 0}
+.block{margin:14px 0 0;padding-top:12px;border-top:1px dashed var(--line)}
+.src{font-size:.8rem;color:var(--muted)}
+details{border:1px solid var(--line);border-radius:14px;padding:0 14px;margin:10px 0;background:var(--card)}
+details>summary{cursor:pointer;padding:13px 0;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details>summary::after{content:"+";color:var(--gold);font-size:1.2rem;line-height:1}
+details[open]>summary::after{content:"–"}
+details>div{padding-bottom:14px}
+ol.q{padding-left:1.2rem}
+ol.q li{margin:.6rem 0}
+.saintquote{font-family:Fraunces,serif;font-size:1.15rem;font-style:italic;border-left:3px solid var(--gold);padding:4px 0 4px 14px;margin:14px 0 4px}
+table.mass{width:100%;border-collapse:collapse;font-size:.93rem}
+table.mass td{padding:8px 6px;vertical-align:top;border-top:1px solid var(--line)}
+table.mass td:first-child{width:46%;color:var(--muted)}
+table.mass tr.part td{border-top:0;padding-top:16px;font-family:Fraunces,serif;font-weight:600;color:var(--brand);font-size:1rem}
+.who{display:block;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;position:relative;padding:0 0 14px 46px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;background:var(--brand);color:var(--bg);display:grid;place-items:center;font-weight:600}
+.skeleton{color:var(--muted);font-style:italic}
+nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav.bottom .wrap{display:flex;justify-content:space-between;padding:0 4px}
+nav.bottom button{flex:1;border:0;background:none;color:var(--muted);font:500 .7rem Inter,sans-serif;padding:8px 2px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+nav.bottom button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+nav.bottom button[aria-current="page"]{color:var(--brand)}
+nav.bottom button[aria-current="page"] svg{stroke-width:2.2}
+footer{color:var(--muted);font-size:.8rem;text-align:center;padding:20px 0 30px}
+.themebtn{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:4px 10px;font:500 .78rem Inter,sans-serif;cursor:pointer}
+@media (max-width:380px){.tagline{display:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap brandbar">
+    <svg viewBox="0 0 512 512" aria-hidden="true"><circle cx="256" cy="256" r="190" fill="var(--card)" stroke="var(--gold)" stroke-width="10"/><path fill="var(--brand)" d="M118 262c34-6 70 2 98 22 18-44 54-88 108-112-10 30-14 58-12 84 34-18 66-24 92-20-22 26-48 50-80 66 16 6 34 8 52 6-28 26-64 40-102 40-26 0-50-6-70-18-26 4-54 0-82-12 22-6 40-14 54-26-22-6-42-16-58-30z"/><circle cx="356" cy="218" r="7" fill="var(--card)"/><path d="M372 230l26 6-24 10z" fill="var(--gold)"/></svg>
+    <div><div class="brandname">LECTIO</div><div class="tagline">Um encontro com Deus</div></div>
+    <div class="daytoggle" role="group" aria-label="Escolher dia">
+      <button id="btnHoje" aria-pressed="true">Hoje</button>
+      <button id="btnAmanha" aria-pressed="false">Amanhã</button>
+      <button id="btnCal" aria-pressed="false" aria-label="Abrir calendário" title="Calendário"><svg viewBox="0 0 24 24" class="ico"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="card cal" id="calPanel" hidden>
+    <div class="calhead">
+      <button class="calnav" id="calPrev" aria-label="Mês anterior">‹</button>
+      <h2 id="calTitle"></h2>
+      <button class="calnav" id="calNext" aria-label="Próximo mês">›</button>
+    </div>
+    <div class="calgrid" id="calGrid"></div>
+    <div class="legend">
+      <span><i style="background:#3f8f5a"></i>Verde</span><span><i style="background:#f4efe2;border-color:#c9b98f"></i>Branco</span><span><i style="background:#b23a3a"></i>Vermelho</span><span><i style="background:#6b3f8f"></i>Roxo</span><span><i style="background:#d98aa6"></i>Rosa</span><span><b class="star">✦</b>Estudo e reflexão</span>
+    </div>
+    <p class="src" style="margin:.6rem 0 0">Toque em qualquer data para ler a liturgia daquele dia. As leituras estão disponíveis para todas as datas; o conteúdo de estudo e reflexão (✦) é publicado diariamente.</p>
+  </div>
+  <div class="hero">
+    <div class="band"></div>
+    <div class="inner">
+      <div class="date"><button class="datebtn" id="heroDate" title="Escolher outra data no calendário"></button></div>
+      <h1 id="heroTitle">Carregando a liturgia…</h1>
+      <span class="chip"><i></i><span id="heroColor">Cor litúrgica</span></span>
+      <p class="quote" id="heroQuote"></p>
+    </div>
+  </div>
+
+  <section class="view on" id="v-liturgia"></section>
+  <section class="view" id="v-estudo"></section>
+  <section class="view" id="v-reflexao"></section>
+  <section class="view" id="v-santo"></section>
+  <section class="view" id="v-guias"></section>
+
+  <footer>LECTIO · Um encontro com Deus<br>Leituras: tradução oficial da CNBB, via Liturgia Diária. Conteúdo de estudo e reflexão produzido pelo LECTIO, com fontes indicadas.<br><button class="themebtn" id="themeBtn">Tema: claro</button></footer>
+</main>
+
+<nav class="bottom" aria-label="Seções">
+  <div class="wrap">
+    <button data-view="liturgia" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M12 7v6M9 10h6"/></svg>Liturgia</button>
+    <button data-view="estudo"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Estudo</button>
+    <button data-view="reflexao"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg>Reflexão</button>
+    <button data-view="santo"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.5"/><ellipse cx="12" cy="3.5" rx="4" ry="1.3"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>Santo</button>
+    <button data-view="guias"><svg viewBox="0 0 24 24"><path d="M12 3v18M7 8h10"/></svg>Guias</button>
+  </div>
+</nav>
+
+<script>window.LECTIO_CONTENT = window.LECTIO_CONTENT || {};</script>
+<script src="conteudo/indice.js"></script>
+<script>
+(function(){
+  "use strict";
+  var TZ = "America/Sao_Paulo";
+  var API = "https://liturgia.up.railway.app/v2/";
+  var FALLBACK = "https://liturgia.cancaonova.com/pb/";
+  var COLORS = {
+    "verde":   {c:"#3f8f5a", soft:"#e6f1e9"},
+    "branco":  {c:"#f4efe2", soft:"#f7f0dc", border:true},
+    "vermelho":{c:"#b23a3a", soft:"#f6e3e1"},
+    "roxo":    {c:"#6b3f8f", soft:"#eee5f4"},
+    "rosa":    {c:"#d98aa6", soft:"#f8e7ee"},
+    "preto":   {c:"#2b2b2b", soft:"#e6e6e6"},
+    "dourado": {c:"#c9a24a", soft:"#f6ecd5"}
+  };
+  var LABELS = {primeiraLeitura:"Primeira Leitura", salmo:"Salmo Responsorial", segundaLeitura:"Segunda Leitura", evangelho:"Evangelho"};
+  var ORDER = ["primeiraLeitura","salmo","segundaLeitura","evangelho"];
+  var state = {key:null, view:"liturgia", data:{}, cmp:{}, cal:null, cores:{}};
+
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function store(k,v){try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){return null;}}
+
+  function brDate(offset){
+    var p = new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
+    var g={}; p.forEach(function(x){g[x.type]=x.value;});
+    var d = new Date(Date.UTC(+g.year, +g.month-1, +g.day + offset, 12));
+    return {y:d.getUTCFullYear(), m:d.getUTCMonth()+1, d:d.getUTCDate(), key:d.toISOString().slice(0,10), obj:d};
+  }
+  function keyToObj(key){
+    var p = key.split("-"), d = new Date(Date.UTC(+p[0], +p[1]-1, +p[2], 12));
+    return {y:+p[0], m:+p[1], d:+p[2], key:key, obj:d};
+  }
+  function hasCurated(key){ return (window.LECTIO_INDICE||[]).indexOf(key) >= 0; }
+  function loadContent(key){
+    if(!hasCurated(key) || window.LECTIO_CONTENT[key] || document.getElementById("c-"+key)) return;
+    var s = document.createElement("script");
+    s.id = "c-"+key; s.src = "conteudo/"+key+".js";
+    s.onload = function(){ if(state.key===key) renderAll(); };
+    document.body.appendChild(s);
+  }
+  function longDate(o){return new Intl.DateTimeFormat("pt-BR",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(o.obj);}
+
+  /* Cache local: texto completo só de hoje/amanhã (rápido ao abrir); cores do calendário num mapa pequeno. */
+  function fetchLit(o){
+    var ck = "lectio-lit-"+o.key, keep = (o.key===brDate(0).key || o.key===brDate(1).key);
+    if(keep){ var cached = store(ck); if(cached){ try{ return Promise.resolve(JSON.parse(cached)); }catch(e){} } }
+    return fetch(API+"?dia="+o.d+"&mes="+o.m+"&ano="+o.y).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(j){ if(keep) store(ck, JSON.stringify(j)); saveCor(o.key, j.cor); return j; });
+  }
+  function saveCor(key, cor){
+    if(!cor || state.cores[key]===cor) return;
+    state.cores[key] = cor;
+    store("lectio-cores", JSON.stringify(state.cores));
+    paintDot(key);
+  }
+  function cleanCache(){
+    try{
+      var keepA = "lectio-lit-"+brDate(0).key, keepB = "lectio-lit-"+brDate(1).key, del = [];
+      for(var i=0;i<localStorage.length;i++){ var k = localStorage.key(i); if(k.indexOf("lectio-lit-")===0 && k!==keepA && k!==keepB) del.push(k); }
+      del.forEach(function(k){ localStorage.removeItem(k); });
+      state.cores = JSON.parse(localStorage.getItem("lectio-cores")||"{}") || {};
+    }catch(e){ state.cores = {}; }
+  }
+  function corHex(name){
+    var key = String(name||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+    return COLORS[key] ? COLORS[key].c : null;
+  }
+
+  /* ---------- Calendário ---------- */
+  var MESES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  function pad(n){ return (n<10?"0":"")+n; }
+  function renderCal(){
+    var c = state.cal, first = new Date(Date.UTC(c.y, c.m-1, 1)), days = new Date(Date.UTC(c.y, c.m, 0)).getUTCDate();
+    var today = brDate(0).key, h = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"].map(function(w){return '<div class="wd">'+w+'</div>';}).join("");
+    for(var i=0;i<first.getUTCDay();i++) h += "<div></div>";
+    for(var d=1; d<=days; d++){
+      var key = c.y+"-"+pad(c.m)+"-"+pad(d), dow = (first.getUTCDay()+d-1)%7;
+      var cls = [key===today?"today":"", key===state.key?"sel":"", dow===0?"sun":""].join(" ");
+      h += '<button data-date="'+key+'" class="'+cls+'" aria-label="'+d+' de '+MESES[c.m-1]+(hasCurated(key)?", com estudo e reflexão":"")+'">'+
+           (hasCurated(key)?'<span class="star" aria-hidden="true">✦</span>':'')+d+'<span class="dot" id="dot-'+key+'"></span></button>';
+    }
+    document.getElementById("calTitle").textContent = MESES[c.m-1]+" de "+c.y;
+    document.getElementById("calGrid").innerHTML = h;
+    for(var k in state.cores) paintDot(k);
+    prefetchCores(c);
+  }
+  function paintDot(key){
+    var el = document.getElementById("dot-"+key), hx = corHex(state.cores[key]);
+    if(el && hx){ el.style.background = hx; el.title = state.cores[key]; }
+  }
+  function prefetchCores(c){
+    var queue = [], days = new Date(Date.UTC(c.y, c.m, 0)).getUTCDate();
+    for(var d=1; d<=days; d++){ var key = c.y+"-"+pad(c.m)+"-"+pad(d); if(!state.cores[key]) queue.push(key); }
+    function next(){
+      var key = queue.shift(); if(!key) return;
+      var o = keyToObj(key);
+      if(state.data[key] && state.data[key].lit){ saveCor(key, state.data[key].lit.cor); return next(); }
+      fetch(API+"?dia="+o.d+"&mes="+o.m+"&ano="+o.y).then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(j){ if(j){ state.data[key] = state.data[key] || {lit:j}; saveCor(key, j.cor); } })
+        .catch(function(){}).then(next);
+    }
+    for(var w=0; w<4; w++) next();
+  }
+  function toggleCal(open){
+    var p = document.getElementById("calPanel");
+    if(open===undefined) open = p.hidden;
+    p.hidden = !open;
+    document.getElementById("btnCal").setAttribute("aria-pressed", open);
+    if(open){ var o = keyToObj(state.key); state.cal = {y:o.y, m:o.m}; renderCal(); window.scrollTo({top:0, behavior:"smooth"}); }
+  }
+  function shiftMonth(n){ var c = state.cal, m = c.m-1+n; state.cal = {y:c.y+Math.floor(m/12), m:((m%12)+12)%12+1}; renderCal(); }
+
+  function verses(t){
+    return esc(t).replace(/(^|[\s“"‘(])(\d{1,3})(?=[A-Za-zÀ-ÿ“"‘—–])/g, '$1<sup>$2</sup>');
+  }
+  function bibleHTML(r, isPsalm){
+    if(isPsalm){
+      var lines = String(r.texto||"").split(/\n+/).map(function(l){return l.replace(/^[\s–—-]+/,"").trim();}).filter(Boolean);
+      return (r.refrao?'<p class="refrain">R. '+esc(r.refrao)+'</p>':"") + lines.map(function(l){return "<p>"+esc(l)+"</p>";}).join("");
+    }
+    return String(r.texto||"").split(/\n+/).filter(Boolean).map(function(l){return "<p>"+verses(l)+"</p>";}).join("");
+  }
+
+  function setColor(name){
+    var key = String(name||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+    var c = COLORS[key] || COLORS.verde;
+    var root = document.documentElement.style;
+    root.setProperty("--lit", c.c);
+    var dark = document.documentElement.getAttribute("data-theme")==="dark" || (document.documentElement.getAttribute("data-theme")!=="light" && matchMedia("(prefers-color-scheme: dark)").matches);
+    root.setProperty("--lit-soft", dark ? "color-mix(in srgb, "+c.c+" 22%, #1c242b)" : c.soft);
+    document.querySelector(".hero .band").style.boxShadow = c.border ? "inset 0 -1px 0 #d9c79a" : "none";
+  }
+
+  function curated(){ return (window.LECTIO_CONTENT||{})[keyToObj(state.key).key]; }
+
+  function readingsList(lit){
+    var out=[];
+    if(!lit||!lit.leituras) return out;
+    ORDER.forEach(function(k){ (lit.leituras[k]||[]).forEach(function(r,i){ out.push({key:k, idx:i, r:r}); }); });
+    return out;
+  }
+
+  function noCurated(){
+    if(hasCurated(state.key)) return '<div class="card skeleton">Carregando…</div>';
+    var msg = state.key > brDate(1).key
+      ? "O estudo e a reflexão desta data serão publicados na véspera. As leituras litúrgicas já estão disponíveis na aba Liturgia."
+      : "Não há estudo e reflexão publicados para esta data. As leituras litúrgicas estão disponíveis na aba Liturgia.";
+    return '<div class="card"><p class="skeleton">'+msg+'</p></div>';
+  }
+
+  /* ---------- Views ---------- */
+  function renderLiturgia(){
+    var o = keyToObj(state.key), d = state.data[o.key], el = document.getElementById("v-liturgia");
+    if(!d){ el.innerHTML='<div class="card skeleton">Carregando as leituras…</div>'; return; }
+    if(d.error){
+      el.innerHTML='<div class="card"><h2>Não foi possível carregar as leituras</h2><p>Verifique sua conexão. Você pode ler a liturgia do dia diretamente na <a href="'+FALLBACK+'" target="_blank" rel="noopener">Liturgia Diária da Canção Nova</a>.</p></div>';
+      return;
+    }
+    var lit = d.lit, h = "";
+    if(lit.oracoes && lit.oracoes.coleta){
+      h += '<div class="card"><div class="eyebrow">Oração do dia (Coleta)</div><p>'+esc(lit.oracoes.coleta)+'</p></div>';
+    }
+    readingsList(lit).forEach(function(it){
+      var r = it.r, isPs = it.key==="salmo", isEv = it.key==="evangelho";
+      h += '<article class="card"><span class="tag bib">Texto bíblico · '+LABELS[it.key]+(it.idx?" (opção "+(it.idx+1)+")":"")+'</span>'+
+           '<h2>'+esc(r.referencia)+'</h2>'+(r.titulo?'<p class="reading-title">'+esc(r.titulo)+'</p>':"")+
+           '<div class="bible">'+bibleHTML(r,isPs)+'</div>'+
+           (isPs?"":'<p class="response">'+(isEv?'— Palavra da Salvação. <b>— Glória a vós, Senhor.</b>':'— Palavra do Senhor. <b>— Graças a Deus.</b>')+'</p>')+'</article>';
+    });
+    h += '<p class="src">Fonte: Liturgia Diária (tradução oficial CNBB) · conferir também em <a href="'+FALLBACK+'" target="_blank" rel="noopener">Canção Nova</a>.</p>';
+    el.innerHTML = h;
+  }
+
+  function renderEstudo(){
+    var o = keyToObj(state.key), d = state.data[o.key], c = curated(), el = document.getElementById("v-estudo");
+    if(!c){ el.innerHTML = noCurated(); return; }
+    var lit = d && d.lit, h = '<div class="card"><div class="eyebrow">Facilitando a leitura</div><h2>Entenda cada leitura</h2>'+
+      '<div class="notice"><b>Atenção:</b> as paráfrases são para <b>estudo pessoal</b>. Elas não substituem o texto litúrgico oficial e <b>não devem ser usadas em celebrações</b>.</div>'+
+      '<p class="src">Use os botões para ver a paráfrase, o texto original ou os dois lado a lado.</p></div>';
+    ORDER.forEach(function(k){
+      var cur = c.leituras && c.leituras[k]; if(!cur) return;
+      var orig = lit && lit.leituras && (lit.leituras[k]||[])[0];
+      var mode = state.cmp[k] || "par";
+      var parHTML = '<div><span class="tag par">Paráfrase de estudo</span><div class="para">'+cur.parafrase.map(function(p){return "<p>"+esc(p)+"</p>";}).join("")+'</div></div>';
+      var origHTML = '<div><span class="tag bib">Texto litúrgico original</span><div class="bible">'+(orig?bibleHTML(orig,k==="salmo"):'<p class="skeleton">Carregando…</p>')+'</div></div>';
+      h += '<article class="card"><div class="eyebrow">'+LABELS[k]+'</div><h2>'+esc(cur.ref)+'</h2>'+
+        '<div class="seg" role="group" aria-label="Modo de leitura">'+
+          ['par','orig','both'].map(function(m){return '<button data-cmp="'+k+'" data-mode="'+m+'" aria-pressed="'+(mode===m)+'">'+({par:"Paráfrase",orig:"Original",both:"Comparar"})[m]+'</button>';}).join("")+
+        '</div><div class="compare '+(mode==="both"?"both":"")+'">'+(mode!=="orig"?parHTML:"")+(mode!=="par"?origHTML:"")+'</div>'+
+        '<div class="block"><div class="eyebrow">Vamos mais fundo</div>'+
+          '<span class="tag hist">Contexto histórico</span><p>'+esc(cur.contexto)+'</p>'+
+          '<span class="tag com">Explicação · comentário</span><p>'+esc(cur.explicacao)+'</p>'+
+          '<span class="tag hist">Curiosidade verificada</span><p>'+esc(cur.curiosidade.texto)+'</p><p class="src">Fonte: '+esc(cur.curiosidade.fonte)+'</p>'+
+          '<span class="tag com">Para a sua vida</span><p>'+esc(cur.aplicacao)+'</p>'+
+        '</div></article>';
+    });
+    el.innerHTML = h;
+  }
+
+  function renderReflexao(){
+    var c = curated(), el = document.getElementById("v-reflexao");
+    if(!c){ el.innerHTML = noCurated(); return; }
+    el.innerHTML = '<article class="card"><div class="eyebrow">Reflexão do dia</div><span class="tag com">Comentário espiritual</span><h2>'+esc(c.reflexao.titulo)+'</h2>'+
+      c.reflexao.paragrafos.map(function(p){return "<p>"+esc(p)+"</p>";}).join("")+'</article>'+
+      '<article class="card"><div class="eyebrow">Qual foi sua resposta?</div><h2>Da leitura à oração e à vida</h2>'+
+      '<p class="src">Leia com calma, responda no seu coração ou num caderno. Não há respostas certas ou erradas.</p><ol class="q">'+
+      c.perguntas.map(function(q){return "<li>"+esc(q)+"</li>";}).join("")+'</ol></article>';
+  }
+
+  function renderSanto(){
+    var c = curated(), el = document.getElementById("v-santo");
+    if(!c){ el.innerHTML = noCurated(); return; }
+    var s = c.santo, q = c.curiosidade;
+    el.innerHTML = '<article class="card"><div class="eyebrow">Santo do dia</div><h2>'+esc(s.nome)+'</h2><p class="src">'+esc(s.subtitulo)+'</p>'+
+      s.bio.map(function(p){return "<p>"+esc(p)+"</p>";}).join("")+
+      (s.frase?'<p class="saintquote">“'+esc(s.frase.texto)+'”</p><p class="src">'+esc(s.frase.fonte)+'</p>':"")+
+      '<p class="src"><i>'+esc(s.notaFrase)+'</i></p>'+(s.outros?'<p class="src">'+esc(s.outros)+'</p>':"")+
+      '<p class="src">Fontes: '+s.fontes.map(esc).join(" · ")+'</p></article>'+
+      '<article class="card"><div class="eyebrow">Curiosidade católica · '+esc(q.tema)+'</div><h2>'+esc(q.titulo)+'</h2>'+
+      q.texto.map(function(p){return "<p>"+esc(p)+"</p>";}).join("")+'<p class="src">Fonte: '+esc(q.fonte)+'</p></article>';
+  }
+
+  var MASS = [
+    ["Ritos iniciais"],
+    ["Em nome do Pai e do Filho e do Espírito Santo.","Amém."],
+    ["A graça de nosso Senhor Jesus Cristo, o amor do Pai e a comunhão do Espírito Santo estejam convosco.","Bendito seja Deus, que nos reuniu no amor de Cristo."],
+    ["Ato penitencial (confissão) e “Senhor, tende piedade de nós”.","Senhor, tende piedade de nós. / Cristo, tende piedade de nós."],
+    ["Glória (aos domingos fora do Advento e da Quaresma, solenidades e festas).","Toda a assembleia canta ou reza o hino."],
+    ["Oremos… (Oração do dia) … por todos os séculos dos séculos.","Amém."],
+    ["Liturgia da Palavra"],
+    ["Ao fim da 1ª e da 2ª leitura: Palavra do Senhor.","Graças a Deus."],
+    ["Salmo: o salmista canta as estrofes.","A assembleia repete o refrão."],
+    ["Aclamação ao Evangelho.","Aleluia! (na Quaresma, outra aclamação)"],
+    ["O Senhor esteja convosco.","Ele está no meio de nós."],
+    ["Proclamação do Evangelho de Jesus Cristo segundo N.","Glória a vós, Senhor."],
+    ["Palavra da Salvação.","Glória a vós, Senhor."],
+    ["Homilia, Profissão de fé (Creio) e Oração dos fiéis.","Após cada prece, a resposta indicada (ex.: Senhor, escutai a nossa prece)."],
+    ["Liturgia Eucarística"],
+    ["Orai, irmãos e irmãs, para que o meu e o vosso sacrifício seja aceito por Deus Pai todo-poderoso.","Receba o Senhor por tuas mãos este sacrifício, para glória do seu nome, para nosso bem e de toda a sua santa Igreja."],
+    ["O Senhor esteja convosco.","Ele está no meio de nós."],
+    ["Corações ao alto.","O nosso coração está em Deus."],
+    ["Demos graças ao Senhor, nosso Deus.","É nosso dever e nossa salvação."],
+    ["Santo (após o Prefácio).","Santo, Santo, Santo, Senhor, Deus do universo…"],
+    ["Mistério da fé!","Anunciamos, Senhor, a vossa morte e proclamamos a vossa ressurreição. Vinde, Senhor Jesus! (ou outra fórmula)"],
+    ["Por Cristo, com Cristo, em Cristo… por todos os séculos dos séculos.","Amém."],
+    ["Rito da Comunhão"],
+    ["Pai-Nosso e “Livrai-nos de todos os males, ó Pai…”.","Vosso é o reino, o poder e a glória para sempre!"],
+    ["A paz do Senhor esteja sempre convosco.","O amor de Cristo nos uniu."],
+    ["Cordeiro de Deus, que tirais o pecado do mundo…","…tende piedade de nós. / …dai-nos a paz."],
+    ["Felizes os convidados para a Ceia do Senhor. Eis o Cordeiro de Deus, que tira o pecado do mundo.","Senhor, eu não sou digno(a) de que entreis em minha morada, mas dizei uma palavra e serei salvo(a)."],
+    ["O Corpo de Cristo.","Amém."],
+    ["Ritos finais"],
+    ["O Senhor esteja convosco.","Ele está no meio de nós."],
+    ["Abençoe-vos Deus todo-poderoso, Pai e Filho ✠ e Espírito Santo.","Amém."],
+    ["Ide em paz, e o Senhor vos acompanhe.","Graças a Deus."]
+  ];
+
+  function renderGuias(){
+    var rows = MASS.map(function(r){
+      return r.length===1 ? '<tr class="part"><td colspan="2">'+esc(r[0])+'</td></tr>'
+        : '<tr><td><span class="who">Celebrante</span>'+esc(r[0])+'</td><td><span class="who" style="color:var(--gold)">Assembleia</span><b>'+esc(r[1])+'</b></td></tr>';
+    }).join("");
+    document.getElementById("v-guias").innerHTML =
+    '<details open><summary>Na Missa — guia de respostas</summary><div>'+
+      '<p class="src">Principais diálogos da Missa conforme o Missal Romano (tradução da CNBB em uso no Brasil). Algumas partes têm mais de uma fórmula possível; siga a comunidade e o folheto da sua paróquia.</p>'+
+      '<table class="mass">'+rows+'</table></div></details>'+
+    '<details><summary>Lectio Divina passo a passo</summary><div>'+
+      '<p>A Lectio Divina é a leitura orante da Bíblia. Bento XVI a descreve em quatro passos, que levam a um quinto: a ação.</p>'+
+      '<ol class="steps">'+
+        '<li><b>Preparação.</b> Encontre um lugar tranquilo, silencie o celular, faça o sinal da cruz e peça a luz do Espírito Santo.</li>'+
+        '<li><b>Leitura (Lectio)</b> — <i>O que o texto diz?</i> Leia o Evangelho do dia devagar, duas ou três vezes. Use a aba Estudo para entender o contexto.</li>'+
+        '<li><b>Meditação (Meditatio)</b> — <i>O que o texto diz para mim?</i> Escolha uma palavra ou frase que chamou sua atenção e repita-a no coração.</li>'+
+        '<li><b>Oração (Oratio)</b> — <i>O que eu digo a Deus?</i> Responda com sinceridade: agradeça, peça perdão, peça ajuda, louve.</li>'+
+        '<li><b>Contemplação (Contemplatio)</b> — Fique em silêncio na presença de Deus. Não precisa dizer nada: só estar com Ele.</li>'+
+        '<li><b>Ação (Actio)</b> — Escolha um gesto concreto para viver hoje. A aba Reflexão traz sugestões em “Qual foi sua resposta?”.</li>'+
+      '</ol><p class="src">Fonte: Bento XVI, Exortação Apostólica Verbum Domini (2010), n. 87; Catecismo da Igreja Católica, n. 2708.</p></div></details>'+
+    '<details><summary>Adicionar o LECTIO à tela inicial</summary><div>'+
+      '<h3>Android (Chrome)</h3><ol><li>Abra o LECTIO no Chrome.</li><li>Toque no menu <b>⋮</b> (três pontinhos) no canto superior direito.</li><li>Toque em <b>“Adicionar à tela inicial”</b> ou <b>“Instalar app”</b>.</li><li>Confirme em <b>Adicionar</b>. O ícone da pomba aparecerá junto com seus apps.</li></ol>'+
+      '<h3>iPhone (Safari)</h3><ol><li>Abra o LECTIO no Safari.</li><li>Toque no botão <b>Compartilhar</b> (quadrado com seta para cima).</li><li>Role e toque em <b>“Adicionar à Tela de Início”</b>.</li><li>Toque em <b>Adicionar</b> no canto superior direito.</li></ol></div></details>'+
+    '<details><summary>Sobre o LECTIO e as fontes</summary><div>'+
+      '<p><b>Texto bíblico</b> (fundo creme, etiqueta “Texto bíblico”): reproduzido da Liturgia Diária, tradução oficial da CNBB, sem alterações.</p>'+
+      '<p><b>Contexto histórico</b> (etiqueta azul): informações sobre época, autor e cultura, com fonte indicada quando é uma curiosidade.</p>'+
+      '<p><b>Comentário espiritual</b> (etiqueta dourada): explicações, reflexões e aplicações escritas pelo LECTIO à luz da fé da Igreja. Não são texto bíblico nem ensinamento oficial.</p>'+
+      '<p>Consultamos fontes católicas como Canção Nova, Vatican News, Vaticano (vatican.va), a Bíblia e o Catecismo da Igreja Católica. Não publicamos citações sem fonte segura nem supostas revelações privadas.</p>'+
+      '<p>As datas seguem o horário de Brasília. O conteúdo é atualizado para hoje e amanhã.</p></div></details>';
+  }
+
+  function renderHero(){
+    var o = keyToObj(state.key), d = state.data[o.key], c = curated();
+    document.getElementById("heroDate").textContent = longDate(o);
+    var title = (d && d.lit && d.lit.liturgia) || (c && c.celebracao) || "Carregando a liturgia…";
+    var cor = (d && d.lit && d.lit.cor) || (c && c.cor) || "";
+    document.getElementById("heroTitle").textContent = title;
+    document.getElementById("heroColor").textContent = cor ? "Cor litúrgica: " + cor : "Cor litúrgica";
+    document.getElementById("heroQuote").textContent = c ? c.destaque : "";
+    setColor(cor);
+  }
+
+  var RENDER = {liturgia:renderLiturgia, estudo:renderEstudo, reflexao:renderReflexao, santo:renderSanto, guias:renderGuias};
+  function renderAll(){ renderHero(); Object.keys(RENDER).forEach(function(k){ RENDER[k](); }); }
+
+  function load(key){
+    var o = keyToObj(key);
+    if(state.data[key] && state.data[key].lit) return;
+    fetchLit(o).then(function(j){ state.data[key] = {lit:j}; }).catch(function(){ state.data[key] = {error:true}; })
+      .then(function(){ if(state.key===key) renderAll(); });
+  }
+
+  function setDay(key, keepCal){
+    state.key = key;
+    document.getElementById("btnHoje").setAttribute("aria-pressed", key===brDate(0).key);
+    document.getElementById("btnAmanha").setAttribute("aria-pressed", key===brDate(1).key);
+    try{ history.replaceState(null, "", key===brDate(0).key ? location.pathname : "#"+key); }catch(e){}
+    if(state.data[key] && state.data[key].error) delete state.data[key];
+    renderAll(); load(key); loadContent(key);
+    if(!keepCal) toggleCal(false); else renderCal();
+  }
+  function setView(v){
+    state.view = v;
+    document.querySelectorAll("section.view").forEach(function(s){ s.classList.toggle("on", s.id==="v-"+v); });
+    document.querySelectorAll("nav.bottom button").forEach(function(b){ if(b.dataset.view===v) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  document.getElementById("btnHoje").onclick = function(){ setDay(brDate(0).key); };
+  document.getElementById("btnAmanha").onclick = function(){ setDay(brDate(1).key); };
+  document.getElementById("btnCal").onclick = function(){ toggleCal(); };
+  document.getElementById("heroDate").onclick = function(){ toggleCal(true); };
+  document.getElementById("calPrev").onclick = function(){ shiftMonth(-1); };
+  document.getElementById("calNext").onclick = function(){ shiftMonth(1); };
+  document.getElementById("calGrid").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-date]"); if(b) setDay(b.dataset.date);
+  });
+  document.querySelectorAll("nav.bottom button").forEach(function(b){ b.onclick = function(){ setView(b.dataset.view); }; });
+  document.getElementById("v-estudo").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-cmp]"); if(!b) return;
+    state.cmp[b.dataset.cmp] = b.dataset.mode; renderEstudo();
+  });
+
+  var themes = ["light","dark","auto"], tnames = {auto:"automático", light:"claro", dark:"escuro"};
+  function applyTheme(t){
+    if(t==="auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t);
+    document.getElementById("themeBtn").textContent = "Tema: " + tnames[t];
+    renderHero();
+  }
+  var curTheme = store("lectio-theme") || "light";
+  document.getElementById("themeBtn").onclick = function(){ curTheme = themes[(themes.indexOf(curTheme)+1)%3]; store("lectio-theme", curTheme); applyTheme(curTheme); };
+
+  cleanCache();
+  var hashKey = (location.hash.match(/^#(\d{4}-\d{2}-\d{2})$/)||[])[1];
+  state.key = hashKey || brDate(0).key;
+  applyTheme(curTheme);
+  setDay(state.key); load(brDate(1).key); loadContent(brDate(1).key);
+  window.addEventListener("hashchange", function(){ var k = (location.hash.match(/^#(\d{4}-\d{2}-\d{2})$/)||[])[1]; if(k && k!==state.key) setDay(k); });
+})();
+</script>
+</body>
+</html>
