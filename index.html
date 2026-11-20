@@ -112,6 +112,8 @@ table.mass{width:100%;border-collapse:collapse;font-size:.93rem}
 table.mass td{padding:8px 6px;vertical-align:top;border-top:1px solid var(--line)}
 table.mass td:first-child{width:46%;color:var(--muted)}
 table.mass tr.part td{border-top:0;padding-top:16px;font-family:Fraunces,serif;font-weight:600;color:var(--brand);font-size:1rem}
+table.mass tr.acl td{background:var(--lit-soft);border-radius:12px;padding:12px}
+.aclbox{display:grid;gap:8px;margin-top:4px}
 .who{display:block;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 .steps{counter-reset:s;list-style:none;padding:0}
 .steps li{counter-increment:s;position:relative;padding:0 0 14px 46px}
@@ -428,7 +430,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding:20px 0 30px}
     ["Corações ao alto.","O nosso coração está em Deus."],
     ["Demos graças ao Senhor, nosso Deus.","É nosso dever e nossa salvação."],
     ["Santo (após o Prefácio).","Santo, Santo, Santo, Senhor, Deus do universo…"],
-    ["Mistério da fé!","Anunciamos, Senhor, a vossa morte e proclamamos a vossa ressurreição. Vinde, Senhor Jesus! (ou outra fórmula)"],
+    ["__ACLAMACAO__"],
     ["Por Cristo, com Cristo, em Cristo… por todos os séculos dos séculos.","Amém."],
     ["Rito da Comunhão"],
     ["Pai-Nosso e “Livrai-nos de todos os males, ó Pai…”.","Vosso é o reino, o poder e a glória para sempre!"],
@@ -442,9 +444,28 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding:20px 0 30px}
     ["Ide em paz, e o Senhor vos acompanhe.","Graças a Deus."]
   ];
 
+  /* Aclamações memoriais — Missal Romano, 3ª edição típica (tradução CNBB). */
+  var ACLAMACOES = [
+    {nome:"1ª fórmula", uso:"Orações Eucarísticas I, II, III e IV", sac:"Mistério da fé!", resp:"Anunciamos, Senhor, a vossa morte e proclamamos a vossa ressurreição. Vinde, Senhor Jesus!"},
+    {nome:"2ª fórmula", uso:"Orações Eucarísticas I, II, III e IV", sac:"Mistério da fé e do amor!", resp:"Todas as vezes que comemos deste pão e bebemos deste cálice, anunciamos, Senhor, a vossa morte, enquanto esperamos a vossa vinda!"},
+    {nome:"3ª fórmula", uso:"Orações Eucarísticas I, II, III e IV", sac:"Mistério da fé para a salvação do mundo!", resp:"Salvador do mundo, salvai-nos, vós que nos libertastes pela cruz e ressurreição."},
+    {nome:"Oração Eucarística V", uso:"Própria da Oração Eucarística V", sac:"Tudo isto é mistério da fé!", resp:"Toda vez que comemos deste Pão, toda vez que bebemos deste Vinho, recordamos a paixão de Jesus Cristo e ficamos esperando sua vinda."}
+  ];
+  function aclamacaoAtual(){ var v = parseInt(store("lectio-aclamacao-"+state.key),10); return (v>=0 && v<ACLAMACOES.length) ? v : 0; }
+  function aclamacaoRow(){
+    var sel = aclamacaoAtual(), a = ACLAMACOES[sel];
+    return '<tr class="acl"><td colspan="2"><span class="who">Aclamação memorial — escolha a que o padre disse</span>'+
+      '<div class="seg" role="group" aria-label="Aclamação memorial">'+ACLAMACOES.map(function(x,i){
+        return '<button data-acl="'+i+'" aria-pressed="'+(i===sel)+'">'+esc(x.nome)+'</button>';}).join("")+'</div>'+
+      '<div class="aclbox"><div><span class="who">Celebrante</span>'+esc(a.sac)+'</div>'+
+      '<div><span class="who" style="color:var(--gold)">Assembleia</span><b>'+esc(a.resp)+'</b></div>'+
+      '<p class="src" style="margin:.4rem 0 0">'+esc(a.uso)+'. Sua escolha fica salva para este dia.</p></div></td></tr>';
+  }
+
   function renderGuias(){
     var rows = MASS.map(function(r){
-      return r.length===1 ? '<tr class="part"><td colspan="2">'+esc(r[0])+'</td></tr>'
+      if(r[0]==="__ACLAMACAO__") return aclamacaoRow();
+      return r.length===1 ?'<tr class="part"><td colspan="2">'+esc(r[0])+'</td></tr>'
         : '<tr><td><span class="who">Celebrante</span>'+esc(r[0])+'</td><td><span class="who" style="color:var(--gold)">Assembleia</span><b>'+esc(r[1])+'</b></td></tr>';
     }).join("");
     document.getElementById("v-guias").innerHTML =
@@ -519,6 +540,11 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding:20px 0 30px}
     var b = e.target.closest("button[data-date]"); if(b) setDay(b.dataset.date);
   });
   document.querySelectorAll("nav.bottom button").forEach(function(b){ b.onclick = function(){ setView(b.dataset.view); }; });
+  document.getElementById("v-guias").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-acl]"); if(!b) return;
+    store("lectio-aclamacao-"+state.key, b.dataset.acl);
+    var tr = document.querySelector("#v-guias tr.acl"); if(tr) tr.outerHTML = aclamacaoRow();
+  });
   document.getElementById("v-estudo").addEventListener("click", function(e){
     var b = e.target.closest("button[data-cmp]"); if(!b) return;
     state.cmp[b.dataset.cmp] = b.dataset.mode; renderEstudo();
