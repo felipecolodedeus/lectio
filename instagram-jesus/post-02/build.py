@@ -30,7 +30,7 @@ T={ 'f1':folder(940,1170),'f1b':folder(940,1170,side='right'),
  'f2':folder(940,1200),'f3':folder(940,1190,side='right'),
  'f4':folder(940,1190),
  't1':torn(480,300,10,22),'t2':torn(420,120,8,18),'t3':torn(900,520,12,26),'t4':torn(980,260,10,24),
- 't5':torn(900,170,9,22),'t6':torn(560,560,12,26),'t7':torn(960,350,10,24),'t8':torn(940,640,10,26),'t9':torn(1160,250,10,26),'t10':torn(460,280,9,20)}
+ 't5':torn(900,170,9,22),'t6':torn(560,560,12,26),'t7':torn(960,350,10,24),'t8':torn(940,640,10,26),'t9':torn(1160,250,10,26),'t10':torn(460,280,9,20),'t11':torn(940,262,9,24),'t12':torn(1000,360,10,26),'t13':torn(1060,400,10,26)}
 
 CROSS='<svg viewBox="0 0 100 130" width="%d" height="%d"><path d="M42 4h16v34h34v16H58v72H42V54H8V38h34z" fill="%s"/></svg>'
 def cross(w,fill): return CROSS%(w,int(w*1.3),fill)
@@ -79,26 +79,25 @@ html='''<!doctype html><html><head><meta charset="utf-8">
 
 <!-- ============ SLIDE 2 ============ -->
 <div class="s" id="s2">
- <div class="wrap" style="left:70px;top:70px;width:940px;height:1200px;transform:rotate(-.5deg)"><div class="paper" style="clip-path:%%f2%%"></div></div>
- <div class="abs lab" style="left:104px;top:110px;font-size:17px">O QUE ELE DISSE</div>
- <div class="abs cond" style="left:104px;top:150px;width:640px;font-size:92px;color:var(--blue);line-height:.98;letter-spacing:-1px">O POVO QUE OUVIU JESUS FALAR PEGOU PEDRA.</div>
- <div class="abs" style="left:104px;right:150px;top:450px;font-size:30px;line-height:1.55;font-weight:500"><span class="hl">Gente que só dá conselho bonito não leva pedrada. Quando Jesus falava certas coisas, a reação era na hora. Eles entenderam o que Ele estava dizendo.</span></div>
+ <div class="wrap" style="left:-30px;top:40px;width:1060px;height:400px;transform:rotate(-1.5deg)"><div class="paper" style="clip-path:%%t13%%"></div></div>
+ <div class="abs lab" style="left:70px;top:95px;font-size:17px;transform:rotate(-1.5deg)">O QUE O PRÓPRIO JESUS DISSE</div>
+ <div class="abs cond" style="left:66px;top:130px;font-size:102px;line-height:1.0;white-space:nowrap;transform:rotate(-1.5deg)">ELE DISSE QUEM É.<br><span style="color:var(--blue)">COM TODAS AS LETRAS.</span></div>
+ <div class="abs" style="left:70px;top:362px;font-size:27px;font-weight:700;transform:rotate(-1.5deg)"><span class="hl">Não foi só “sou um profeta” ou “sou um mestre”. Olha só:</span></div>
 
- <div class="abs" style="left:104px;right:104px;top:690px">
-  <div style="display:flex;gap:22px;margin-bottom:26px"><div style="width:16px;background:var(--blue);flex:none"></div><div>
-   <div class="q" style="font-size:37px">“Antes que Abraão existisse, EU SOU.”</div>
-   <div style="font-size:27px;line-height:1.4;margin-top:6px;font-weight:500">Jo 8,58. “Eu Sou” é o nome com que Deus se revelou a Moisés (Ex 3,14). Na hora, pegaram pedra (Jo 8,59).</div></div></div>
-  <div style="display:flex;gap:22px;margin-bottom:26px"><div style="width:16px;background:var(--blue);flex:none"></div><div>
-   <div class="q" style="font-size:37px">“Eu e o Pai somos um.”</div>
-   <div style="font-size:27px;line-height:1.4;margin-top:6px;font-weight:500">Jo 10,30. De novo, pedras. E o motivo veio dito: “tu, sendo homem, te fazes Deus” (Jo 10,33).</div></div></div>
-  <div style="display:flex;gap:22px"><div style="width:16px;background:var(--blue);flex:none"></div><div>
-   <div class="q" style="font-size:37px">“Filho, os teus pecados estão perdoados.”</div>
-   <div style="font-size:27px;line-height:1.4;margin-top:6px;font-weight:500">Mc 2,5-7. “Quem pode perdoar pecados, a não ser Deus?” Perguntaram certo. Jesus fez um milagre pra mostrar que tinha esse poder (Mc 2,10-11).</div></div></div>
- </div>
- <div class="wrap" style="left:690px;top:1205px;width:440px;height:280px;transform:rotate(-7deg)"><div class="dark" style="width:100%;height:100%;clip-path:%%t10%%"></div></div>
- <div class="abs" style="left:830px;top:1235px;transform:rotate(-7deg)">%%cross_sm%%</div>
- <div class="tape" style="left:90px;top:48px;width:190px;height:54px;transform:rotate(-8deg)"></div>
- <div class="stamp" style="right:100px;top:165px;font-size:30px;line-height:1.15;text-align:center;transform:rotate(7deg)">Tudo no<br>Evangelho</div>
+ <div class="wrap" style="left:70px;top:470px;width:940px;height:262px;transform:rotate(1.2deg)"><div class="paper" style="clip-path:%%t11%%;padding:44px 44px">
+   <div class="cond" style="font-size:50px;color:var(--blue);white-space:nowrap">“ANTES QUE ABRAÃO EXISTISSE, EU SOU.”</div>
+   <div style="font-size:27px;line-height:1.4;margin-top:12px;font-weight:500">Jo 8,58. <b>“Eu Sou”</b> é o nome que Deus revelou a Moisés na sarça ardente (Ex 3,14). Jesus usou esse nome pra falar de si.</div></div></div>
+ <div class="tape" style="left:110px;top:452px;width:150px;height:46px;transform:rotate(-12deg)"></div>
+
+ <div class="wrap" style="left:50px;top:735px;width:940px;height:262px;transform:rotate(-1.4deg)"><div class="dark" style="width:100%;height:100%;clip-path:%%t11%%;padding:40px 44px">
+   <div class="cond" style="font-size:62px;color:#fff">“EU E O PAI SOMOS UM.”</div>
+   <div style="font-size:27px;line-height:1.4;margin-top:12px;font-weight:500;color:#ddd">Jo 10,30. Quem ouviu entendeu na hora e respondeu: <b style="color:#fff">“tu, sendo homem, te fazes Deus”</b> (Jo 10,33).</div></div></div>
+ <div class="tape" style="left:820px;top:715px;width:150px;height:46px;transform:rotate(9deg)"></div>
+
+ <div class="wrap" style="left:80px;top:1035px;width:940px;height:262px;transform:rotate(1deg)"><div style="width:100%;height:100%;background:var(--cream);clip-path:%%t11%%;padding:48px 44px">
+   <div class="cond" style="font-size:52px;color:var(--blue);white-space:nowrap">“OS TEUS PECADOS ESTÃO PERDOADOS.”</div>
+   <div style="font-size:27px;line-height:1.4;margin-top:12px;font-weight:500">Mc 2,5-7. Só Deus perdoa pecados. Os próprios escribas disseram isso: “Quem pode perdoar pecados, a não ser Deus?”</div></div></div>
+ <div class="tape" style="left:450px;top:1005px;width:150px;height:46px;transform:rotate(-4deg)"></div>
 </div>
 
 <!-- ============ SLIDE 3 ============ -->
@@ -106,7 +105,7 @@ html='''<!doctype html><html><head><meta charset="utf-8">
  <div class="wrap" style="left:70px;top:70px;width:940px;height:1190px;transform:rotate(.6deg)"><div class="paper" style="clip-path:%%f3%%"></div></div>
  <div class="abs lab" style="left:104px;top:125px;font-size:17px">E OS APÓSTOLOS?</div>
  <div class="abs big" style="left:100px;top:170px;font-size:112px;line-height:.95;letter-spacing:-2px;width:700px">TOMÉ ERA O CÉTICO DA TURMA.</div>
- <div class="abs" style="left:104px;right:150px;top:500px;font-size:30px;line-height:1.55;font-weight:500"><span class="hl">Ele falou que só acreditava se visse e tocasse as feridas. Oito dias depois, Jesus aparece e convida: “põe o dedo aqui”. E aí o cético responde (Jo 20,24-28):</span></div>
+ <div class="abs" style="left:104px;right:150px;top:500px;font-size:30px;line-height:1.55;font-weight:500"><span class="hl">Ele não estava lá quando Jesus ressuscitado apareceu, e disse que só acreditava se tocasse nas feridas. Oito dias depois, Jesus aparece e chama ele. Tomé responde (Jo 20,24-28):</span></div>
  <div class="wrap" style="left:60px;top:735px;width:960px;height:350px;transform:rotate(-2deg)"><div style="width:100%;height:100%;background:var(--blue);clip-path:%%t7%%;display:flex;align-items:center;padding:0 54px"><div class="cond" style="font-size:112px;color:#f1f1ec;line-height:.98">“MEU SENHOR E MEU DEUS!”</div></div></div>
  <div class="abs" style="left:104px;right:130px;top:1120px;font-size:29px;line-height:1.5;font-weight:700">E Jesus não corrige nem diz “calma, exagerou”. Ele aceita, e ainda abençoa quem crê sem ter visto (Jo 20,29). Esse alguém é você.</div>
  <div class="stamp" style="left:760px;top:165px;font-size:16px;line-height:1.2;text-align:center;white-space:nowrap;transform:rotate(-6deg)">Jo 1,1<br>O Verbo era Deus</div>
@@ -118,7 +117,7 @@ html='''<!doctype html><html><head><meta charset="utf-8">
  <div class="wrap" style="left:60px;top:80px;width:940px;height:1190px;transform:rotate(-.7deg)"><div class="paper" style="clip-path:%%f4%%"></div></div>
  <div class="abs lab" style="left:96px;top:140px;font-size:17px">A DÚVIDA MAIS COMUM</div>
  <div class="abs cond" style="left:96px;top:180px;font-size:104px;color:var(--blue);width:820px;line-height:.98">MAS COMO ASSIM, DEUS E HOMEM?</div>
- <div class="abs" style="left:96px;right:120px;top:500px;font-size:32px;line-height:1.55;font-weight:500"><span class="hl">Não é metade Deus, metade gente (CIC 464). É uma pessoa só, o Filho de Deus, que é totalmente Deus e totalmente homem, sem mistura e sem confusão. A Igreja definiu isso no Concílio de Calcedônia, em 451 (CIC 467).</span></div>
+ <div class="abs" style="left:96px;right:120px;top:500px;font-size:32px;line-height:1.55;font-weight:500"><span class="hl">Não é metade Deus e metade homem (CIC 464). É 100% Deus e 100% homem, numa pessoa só: o Filho de Deus. A Igreja deixou isso claro no Concílio de Calcedônia, no ano 451 (CIC 467).</span></div>
  <div class="abs" style="left:96px;right:120px;top:850px">
    <div class="lab" style="font-size:30px;margin-bottom:12px">Toda missa você reza isso:</div>
    <div class="q" style="font-size:46px;color:var(--blue)">“Deus verdadeiro de Deus verdadeiro”</div>

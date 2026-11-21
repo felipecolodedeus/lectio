@@ -1,6 +1,6 @@
 Jesus é Deus? Vamos conversar sobre isso sem enrolação. 👇
 
-Pensa comigo: ninguém pega pedra pra quem só dá conselho bonito. E foi exatamente isso que fizeram quando Jesus disse "Antes que Abraão existisse, EU SOU" (Jo 8,58) e "Eu e o Pai somos um" (Jo 10,30). Eles entenderam o que Ele estava dizendo.
+Jesus não se apresentou só como profeta ou mestre. Ele disse "Antes que Abraão existisse, Eu Sou" (Jo 8,58), usando o nome que Deus revelou a Moisés (Ex 3,14). Disse "Eu e o Pai somos um" (Jo 10,30). E perdoou pecados, coisa que só Deus faz (Mc 2,5-7).
 
 Tomé, o cético da turma, quando viu Jesus ressuscitado soltou: "Meu Senhor e meu Deus!" (Jo 20,28). E Jesus não corrigiu.
 
