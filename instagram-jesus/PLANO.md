@@ -7,6 +7,12 @@ Não tenho acesso ao Google Trends em tempo real. A lista abaixo se baseia nas p
 sobre Jesus (padrão de "As pessoas também perguntam" / autocompletar). Antes de fixar o calendário,
 confirme a ordem em: Google Trends (Brasil, últimos 12 meses), AnswerThePublic e o autocompletar do Google.
 
+## Regras atualizadas (definidas pelo autor do perfil)
+- **Só fontes católicas**: Bíblia, Catecismo (CIC), santos, Padres da Igreja, concílios, magistério. Nada de historiadores ou autores de fora da Igreja.
+- **Texto humano**: tom de conversa, curto, sem cara de robô ("pensa comigo", "bora ver").
+- **Visual colagem/street**: papel rasgado, pastas, fita, carimbos, tarjas pretas, azul com grão. Sem numeração de página (nada de "2/5").
+- Não atribuir falas a padres/pregadores sem texto ou vídeo verificável.
+
 ## Formato e cadência
 - 3 posts/semana (seg, qua, sex ~19h) + Stories diários com caixinha de perguntas.
 - Carrossel 1080x1350, 5–7 slides: gancho (pergunta) → resposta em camadas → fonte → convite (comentar/salvar/enviar).
