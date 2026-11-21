@@ -14,6 +14,4 @@ Se Ele é Deus, dá pra falar com Ele hoje. 🙏
 📲 Manda pra quem diz que Jesus era só um cara bom
 💬 Comenta a pergunta que ninguém te respondeu. O próximo post pode ser a resposta.
 
-Próximo: como Jesus morreu?
-
 #jesus #jesuscristo #igrejacatolica #catolico #catecismo #credo #santoatanasio #jovenscatolicos #fe #evangelho

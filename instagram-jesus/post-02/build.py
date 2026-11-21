@@ -141,8 +141,7 @@ html='''<!doctype html><html><head><meta charset="utf-8">
   <div style="margin-bottom:14px">🔖 Salva pra ler quando a dúvida bater</div>
   <div style="margin-bottom:14px">📲 Manda pra quem diz que Ele era só um cara bom</div>
   <div>💬 Comenta a pergunta que ninguém te respondeu</div></div>
- <div class="wrap" style="left:600px;top:1215px;width:440px;height:110px;transform:rotate(-3deg)"><div class="paper" style="clip-path:%%t2%%;display:flex;align-items:center;justify-content:center"><div class="lab" style="font-size:24px;line-height:1.15;text-align:center">Próximo: como<br>Jesus morreu?</div></div></div>
-</div>
+ </div>
 </body></html>'''
 html=html.replace('%%cross_w%%',cross(70,'#fff')).replace('%%cross_sm%%',cross(110,'#d9d9d5')).replace('%%cross_w2%%',cross(70,'#f1f1ec'))
 for k,v in T.items(): html=html.replace('%%'+k+'%%',v)
