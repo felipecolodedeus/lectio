@@ -73,7 +73,7 @@ html='''<!doctype html><html><head><meta charset="utf-8">
  <div class="abs" style="right:30px;top:330px;transform:rotate(90deg);transform-origin:right top;border:4px solid #111;padding:6px 16px;font-family:'Anton';font-size:30px;letter-spacing:2px;white-space:nowrap">SEM ENROLAÇÃO</div>
  <div class="abs big" style="left:96px;top:455px;font-size:212px;white-space:nowrap">JESUS<br>É<br>DEUS?</div>
  <div class="abs" style="left:110px;right:130px;top:1085px;text-align:center">
-  <div class="lab" style="font-size:36px;border-top:5px solid var(--blue);border-bottom:5px solid var(--blue);padding:12px 0;letter-spacing:0">A pergunta que racha o grupo da família</div></div>
+  <div class="lab" style="font-size:36px;border-top:5px solid var(--blue);border-bottom:5px solid var(--blue);padding:12px 0;letter-spacing:0">Já te perguntaram isso e você ficou sem resposta?</div></div>
  <div class="tape" style="left:600px;top:62px;width:200px;height:58px;transform:rotate(3deg)"></div>
 </div>
 
